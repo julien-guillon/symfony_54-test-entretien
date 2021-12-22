@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <h1>Liste d'articles</h1>
+
+    <table class="table table-bordered table-striped table-fluid text-center table-hover ">
+        <thead class="bg-dark text-light">
+        <tr>
+            <th>Titre</th>
+            <th>voir</th>
+            <th>modifier</th>
+            <th>supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.title }}</td>
+                <td><a class="btn btn-outline-primary btn-sm" href="{{ path('article_show', {'id': article.id}) }}"><i
+                            class="fa fa-eye"></i></a>
+                </td>
+                <td><a class="btn btn-outline-primary btn-sm" href="{{ path('article_edit', {'id': article.id}) }}"><i
+                            class="fa fa-wrench"></i></a>
+                </td>
+                <td>
+                    {{ include('article/delete.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Pas d'article sauvegardée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

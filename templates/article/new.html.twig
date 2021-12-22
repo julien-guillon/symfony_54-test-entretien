@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Article{% endblock %}
+
+{% block body %}
+    <h1>Créer article</h1>
+    <div class="form-group">
+        {{ form_start(form) }}
+        {{ form_end(form) }}
+    </div>
+    {% block javascripts %}
+        <script>
+            // Script pour le remplissage du nom du fichier dans l'input
+            $('.custom-file-input').on('change', function (event) {
+                var inputFile = event.currentTarget;
+                $(inputFile).parent()
+                    .find('.custom-file-label')
+                    .html(inputFile.files[0].name);
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
+

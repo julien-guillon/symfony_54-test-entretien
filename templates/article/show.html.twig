@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article{% endblock %}
+
+{% block body %}
+    <a class="btn btn-dark pb-1" href="{{ path('article_index') }}">Retour</a>
+    <div class="row">
+        <div class="col-lg-8">
+            <h2>{{ article.title }}</h2>
+            {% if article.introduction %}<h5>{{ article.introduction }}</h5>{% endif %}
+            <img class="img-fluid" src="{{ asset('/uploads/'~ article.photo) }}">
+            <p class="mt-2">{{ article.content }}</p>
+            <br>
+        </div>
+        <div class="col-lg-4">
+            {% for article in articles %}
+                <h5 class="m-2">{{ article.title }}</h5>
+                <div class="card">
+                    <img class="card-img-top" src="{{ asset('/uploads/'~ article.photo) }}">
+                    <div class="card-body">
+                        <p class="card-text p-2">{{ article.content[:150] ~ '...' }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

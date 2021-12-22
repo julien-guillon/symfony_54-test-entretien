@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Article{% endblock %}
+
+{% block body %}
+    <h1>Modifier article</h1>
+    <a class="btn btn-dark mb-3" href="{{ path('article_index') }}">Retour</a>
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+{% endblock %}
