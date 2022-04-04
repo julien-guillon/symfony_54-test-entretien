@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Liste des Articles' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            {% for message in app.flashes('success') %}
+                <div class = "alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <h3>Liste des articles</h3>
+            {% for article in articles %}
+                <div class="col l12" style="border: 1px solid midnightblue">
+                    <div class="col s12 m8 l6">
+                        <div class="article-card">
+                            <h4><a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a></h4>
+                        </div>
+                    </div>
+                    <div class="col s12 m8 l6" style="margin-top: 20px; text-align: right;">
+                        <a href="{{ path('show_article', {'id': article.id}) }}"><button class="btn">Voir</button></a>
+                        <a href="{{ path('update_article', {'id': article.id}) }}"><button class="btn" style="background-color: orange">Modifier</button></a>
+                        <form method = "post" action="{{ path('delete_article', {id:article.id}) }}" style = "display: inline-block" onsubmit = "return confirm('Êtes-vous sûr de vouloir supprimer cet article ?')">
+                            <input type = "hidden" name = "_method" value = "DELETE">
+                            <input type = "hidden" name = "_token" value = "{{ csrf_token('delete' ~ article.id) }}">
+                            <button class="btn" style="background-color: red">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+

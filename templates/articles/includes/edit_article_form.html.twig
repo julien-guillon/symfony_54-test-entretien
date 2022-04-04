@@ -1,0 +1,23 @@
+{{ form_start(form, {'attr': {'class': 'row'}}) }}
+
+    <div class="input-field col s12 m12 l12">
+        {{ form_widget(form.title,{ 'attr':{'readonly':'1'}}) }}
+        {{ form_label(form.title, 'Titre de l\'article') }}
+    </div>
+
+    <div class="input-field col s12 m12 l12">
+        {{ form_widget(form.introduction, {'attr': {'placeholder': 'Introduction de l\'article'}}) }}
+        {{ form_label(form.introduction, 'Introduction') }}
+    </div>
+
+    <div class="input-field col s12 m12 l12">
+        {{ form_widget(form.content, {'attr': {'placeholder': 'Contenu de l\'article'}}) }}
+        {{ form_label(form.content, 'Contenu') }}
+        <span class="error">{{ form_errors(form.content) }}</span>
+    </div>
+
+    <div class="input-field col s12 m12 l12">
+        <input type="submit" name="" value="Valider" class="btn btn-primary">
+    </div>
+{{ form_row(form._token) }}
+{{ form_end(form, {render_rest: false}) }}

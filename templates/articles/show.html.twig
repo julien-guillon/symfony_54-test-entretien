@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Article' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l8">
+                <div class="col s12 m12 l8 offset-l2">
+                    <h2>{{ article.title }}</h2>
+                    <p>
+                        <img src="{{ asset('uploads/' ~ article.photo) }}" class="responsive-img">
+                    </p>
+                </div>
+                <div class="col s12 m12 l8 offset-l2">
+                    <p>
+                        {{ article.content }}
+                    </p>
+                </div>
+            </div>
+            <div class="col s12 m12 l4" style="margin-top: 30px">
+                <h5>Consulter d'autres articles</h5>
+                {% for article_connexe in articles_connexes %}
+                    <div class="col s12 m12 l8 offset-l2">
+                        <p>
+                            <a href="{{ path('show_article', {'id': article_connexe.id}) }}">
+                                {% if article.photo is not null %}
+                                    <img src="{{ asset('uploads/' ~ article_connexe.photo) }}" class="responsive-img">
+                                {% endif %}
+                            </a>
+                        </p>
+                        <h6><a href="{{ path('show_article', {'id': article_connexe.id}) }}">{{ article_connexe.title }}</a></h6>
+                    </div>
+                    <div class="col s12 m12 l8 offset-l2">
+                        <p>
+                            {{ article_connexe.introduction }}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
