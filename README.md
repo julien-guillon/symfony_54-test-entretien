@@ -32,7 +32,7 @@ docker-compose exec php \
 Veuillez suivre les indications présentes dans le fichier INSTRUCTIONS.md présent à la racine de ce projet.
 Il contient les tâches à réaliser pour ce test.
 
-## Envoyez vos résultats
+## Envoyez vos résultats !
 Pour envoyer vos résultats, vous simplement push votre travail avec un pull request.
 
 **Bonne chance !**
