@@ -15,8 +15,11 @@
     </head>
     <body>
         <nav>
-            <li><a href='{{path('app_hello')}}'>Hello</a></li>
-            <li><a href='{{path('app_articles')}}'>Articles</a></li>
+            <ul>
+                <li><a href='{{path('app_hello')}}'>Hello</a></li>
+                <li><a href='{{path('app_articles')}}'>Articles</a></li>
+                <li><a href='{{path('app_articles_add')}}'>Ajouter un article</a></li>
+            </ul>
         </nav>
         {% block body %}{% endblock %}
     </body>

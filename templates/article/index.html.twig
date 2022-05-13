@@ -10,6 +10,16 @@
 
 <div class="example-wrapper">
     <h1>Bonjour, bienvenue sur la liste des articles ✅</h1>
-    <p>Insérer ici la liste des articles</p>
+    <p>Liste des articles : </p>
+    {% for art in articles %}
+        <article>
+            <div>
+                <h2>{{art.title}}</h2>
+                <a href="{{path('app_articles_show', {id: art.id})}}">Voir l'article</a>
+                <a href="{{path('app_articles_update', {id: art.id})}}">Modifier</a>
+                <a href="{{path('app_articles_delete', {id: art.id})}}">Supprimer</a>
+            </div>
+        </article>
+    {% endfor %}
 </div>
 {% endblock %}
