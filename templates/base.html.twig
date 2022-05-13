@@ -14,6 +14,10 @@
         {% endblock %}
     </head>
     <body>
+        <nav>
+            <li><a href='{{path('app_hello')}}'>Hello</a></li>
+            <li><a href='{{path('app_articles')}}'>Articles</a></li>
+        </nav>
         {% block body %}{% endblock %}
     </body>
 </html>
