@@ -17,9 +17,21 @@
                 <h2>{{art.title}}</h2>
                 <a href="{{path('app_articles_show', {id: art.id})}}">Voir l'article</a>
                 <a href="{{path('app_articles_update', {id: art.id})}}">Modifier</a>
-                <a href="{{path('app_articles_delete', {id: art.id})}}">Supprimer</a>
+                <a href='#' onclick="deleteArticle()">Supprimer</a>
             </div>
         </article>
+
+        <form id="article-delete-form" action="{{path('app_articles_delete', {id: art.id})}}" method="post" style="display : none">
+            <input type="hidden" name="csrf_token" value={{csrf_token("artDelete_" ~ art.id)}} />
+            <input type="hidden" name="_method" value="DELETE" />
+        </form>
+        
+        <script>
+        function deleteArticle(){
+            event.preventDefault();
+            confirm("Voulez-vous supprimer cet article ?") && document.getElementById('article-delete-form').submit();
+        }
+    </script>
     {% endfor %}
 </div>
 {% endblock %}
