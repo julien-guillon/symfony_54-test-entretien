@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Form\AddArticleType;
 use App\Form\UpdateArticleType;
 use App\Repository\ArticleRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -19,14 +20,19 @@ class ArticleController extends AbstractController
     #[Route('/articles', name: 'app_articles', methods:"GET")]
     public function index(ArticleRepository $articleRepository): Response
     {
-        $articles = $articleRepository->findAll();
+        $articles = $articleRepository->findBy([], ['id' => 'ASC']);;
         return $this->render('article/index.html.twig', compact('articles'));
     }
 
     #[Route('/article/{id<[0-9]+>}', name: 'app_articles_show', methods:"GET")]
-    public function show(Article $art): Response
+    public function show(Article $art, ArticleRepository $articleRepository): Response
     {
-        return $this->render('article/showArticle.html.twig', compact('art'));
+        $filter = new Criteria();
+        $filter->where(Criteria::expr()->neq('id', $art->getId()));
+
+        $articles = $articleRepository->matching($filter);
+
+        return $this->render('article/showArticle.html.twig', compact('art', 'articles'));
     }
 
     #[Route('/articles/add', name: 'app_articles_add', methods:"GET|POST")]

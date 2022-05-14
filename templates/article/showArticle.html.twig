@@ -4,6 +4,42 @@
 
 {% block body %}
 
-<h1>Hello je suis un article</h1>
+<div class="wrapper article">
+    <article>
+        <h1 class="article__title">{{art.title}}</h1>
+        <div class="article__row">
+            <div class="article__post">
+                {% if art.photo %}
+                <div class="article__post__img">
+                    <img src="{{asset('uploads/img/' ~ art.photo)}}" />
+                </div>
+                {% endif %}
+                
+                <div class="article__post__content">
+                    <p>{{art.content}}</p>
+                </div>
+            </div>
+            <aside class="article__relatedPosts aside">
+            <p class="aside__title">Consulter d'autres articles</p>
+            {% for art in articles %}
+                <div class="aside__card">
+                    {% if art.photo %}
+                    <div class="aside__card__img">
+                        <img src="{{asset('uploads/img/' ~ art.photo)}}" />
+                    </div>
+                    {% endif %}
 
+                    <div class="aside__card__body">
+                        <h2><a href="{{path('app_articles_show', {id: art.id})}}">{{art.title}}</a></h2>
+                        {% if art.introduction %}
+                        <p>{{art.introduction}}</p>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            {% endfor %}
+            </aside>
+        </div>
+    </article>
+</div>
 {% endblock %}
