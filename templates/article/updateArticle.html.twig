@@ -8,14 +8,16 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-    <h1>Modifier l'article {{art.id}}</h1>
+<div class="wrapper">
+    <div class="form_wrapper">
+        <h1 class="form__title">Modifier l'article {{art.id}}</h1>
 
-    <div>
-        {{form_start(updateArticleForm)}}
-            {{form_widget(updateArticleForm)}}
-            <input type="submit" value="Modifier l'article">
-        {{form_end(updateArticleForm)}}
+        <div class="form">
+            {{form_start(updateArticleForm)}}
+                {{form_widget(updateArticleForm)}}
+                <input type="submit" class="form__btn" value="Modifier l'article">
+            {{form_end(updateArticleForm)}}
+        </div>
     </div>
 </div>
 

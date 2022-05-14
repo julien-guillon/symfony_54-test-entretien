@@ -26,6 +26,10 @@ h2 {
   margin-bottom: .5rem;
 }
 
+ul, li {
+  list-style: none;
+}
+
 .article__row {
   display: flex;
   justify-content: space-between;
@@ -70,6 +74,76 @@ h2 {
 .aside__card__body h2 a {
   color: black;
   text-decoration: none;
+}
+
+.form_wrapper {
+  max-width: 800px;
+  background-color: white;
+  margin: auto;
+  padding: 1.25rem;
+  border-radius: .5rem;
+  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.form {
+  max-width: 650px;
+  margin: auto;
+}
+
+.form__title {
+  text-align: center;
+}
+
+.form label {
+  display: block;
+  margin-bottom: .25rem;
+}
+
+.form input:not(.form__inputFile), .form textarea {
+  width: 100%;
+  border-radius: .25rem;
+  border: solid rgba(0, 0, 0, 0.3) 1px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.form input:not(.form__inputFile):focus, .form textarea:focus {
+  outline: inset black 1px;
+}
+
+.form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form__inputFile {
+  margin-bottom: 1rem;
+  max-width: 100%;
+}
+
+.form__inputFile::file-selector-button {
+  background-color: #1C6EA4;
+  border: none;
+  color: white;
+  border-radius: .25rem;
+  padding: .25rem .5rem;
+  margin-right: .5rem;
+  font-family: 'Montserrat';
+}
+
+.form__btn {
+  max-width: 300px;
+  display: block;
+  background-color: #1C6EA4;
+  color: white;
+  border: none !important;
+  margin: auto;
+}
+
+.form ul {
+  font-size: .9rem;
+  color: red;
+  margin-bottom: .5rem;
 }
 
 @media screen and (max-width: 899px) {
