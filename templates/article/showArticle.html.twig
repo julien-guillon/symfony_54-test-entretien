@@ -14,8 +14,11 @@
                     <img src="{{asset('uploads/img/' ~ art.photo)}}" />
                 </div>
                 {% endif %}
-                
+
                 <div class="article__post__content">
+                    {% if art.introduction %}
+                        <p>{{art.introduction}}</p>
+                    {% endif %}
                     <p>{{art.content}}</p>
                 </div>
             </div>

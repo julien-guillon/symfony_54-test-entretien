@@ -30,6 +30,37 @@ ul, li {
   list-style: none;
 }
 
+.list__item {
+  margin-bottom: 2rem;
+}
+
+header {
+  background-color: white;
+  border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+}
+
+header .navigation {
+  margin-top: 0;
+  padding: 0.5rem 0;
+}
+
+header .navigation__list {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+header .navigation__list__item {
+  padding: 0.5rem;
+}
+
+header .navigation__list__item a {
+  text-decoration: none;
+  color: black;
+}
+
 .article__row {
   display: flex;
   justify-content: space-between;
@@ -46,6 +77,10 @@ ul, li {
 
 .article__post__img img {
   max-width: 100%;
+}
+
+.article__post__content p {
+  margin-bottom: 1rem;
 }
 
 .article__relatedPosts {
