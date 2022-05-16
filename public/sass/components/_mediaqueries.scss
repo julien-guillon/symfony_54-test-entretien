@@ -1,0 +1,22 @@
+@media screen and (max-width : 899px ){
+    .wrapper {
+        max-width: 750px;
+    }
+
+    .article {
+        &__row {
+            display: block;
+        }
+    
+        &__post, &__relatedPosts {
+            width : 100%;
+        }
+    }
+
+    .aside {
+        margin-top: 2rem;
+    }
+    
+
+
+}
