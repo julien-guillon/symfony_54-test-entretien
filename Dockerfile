@@ -28,13 +28,25 @@ ARG APCU_VERSION=5.1.21
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 		$PHPIZE_DEPS \
+                freetype \
+                freetype-dev \
 		icu-dev \
+                libjpeg-turbo \
+                libjpeg-turbo-dev \
+                libpng \
+                libpng-dev \
 		libzip-dev \
 		zlib-dev \
 	; \
 	\
+	docker-php-ext-configure \
+                gd \
+                        --with-freetype=/usr/include/ \
+                        --with-jpeg=/usr/include/ \
+        ; \
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
+		gd \
 		intl \
 		zip \
 	; \
@@ -44,6 +56,7 @@ RUN set -eux; \
 	pecl clear-cache; \
 	docker-php-ext-enable \
 		apcu \
+		gd \
 		opcache \
 	; \
 	\
