@@ -4,12 +4,12 @@ namespace App\Form;
 
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ArticleType extends AbstractType
 {
@@ -17,25 +17,27 @@ class ArticleType extends AbstractType
     {
         if(!$options['edit']) {
             $builder
-                ->add('title', TextType::class, ['required' => true]);
+                ->add('title', TextType::class, [
+                      'required' => true,
+                      'label' => 'Titre'
+                ]);
         }
         $builder
-            ->add('introduction', TextType::class, ['required' => false])
-            ->add('content', TextareaType::class);
-        if($options['edit']) {
+            ->add('introduction', TextType::class, [
+                  'required' => false,
+                  'label' => 'Introduction'
+              ])
+            ->add('content', TextareaType::class, [
+                  'label' => 'Contenu',
+                  'attr' => [
+                    'rows' => 10
+                  ]
+              ]);
+        if(!$options['edit']) {
             $builder
-                ->add('photo', FileType::class, [
+                ->add('photoFile', VichImageType::class, [
                       'required' => false,
-                      'constraints' => [
-                            new Assert\File([
-                                'maxSize' => '4mi',
-                                'mimeTypes' => [
-                                             'image/png',
-                                             'image/jpeg'
-                                ],
-                                'mimeTypesMessage' => 'Veuillez seulement utiliser une image jpeg ou png.',
-                            ])
-                      ]
+                      'label' => 'Photo'
                 ])
             ;
         }

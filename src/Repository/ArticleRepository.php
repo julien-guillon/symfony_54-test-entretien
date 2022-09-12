@@ -23,8 +23,8 @@ class ArticleRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.id != :id')
-            ->setParameter('id', $id);
-
+            ->setParameter('id', $id)
+            ->setMaxResults(50);
         $query = $qb->getQuery();
 
         return $query->execute();

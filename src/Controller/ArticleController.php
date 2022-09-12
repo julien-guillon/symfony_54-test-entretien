@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ArticleController extends AbstractController
 {
@@ -27,7 +26,7 @@ class ArticleController extends AbstractController
     public function index(): Response
     {
         return $this->render('article/index.html.twig', [
-            'articles' => $this->repository->findAll(),
+            'articles' => $this->repository->findBy([], ['id' => 'DESC']),
         ]);
     }
 
@@ -38,37 +37,12 @@ class ArticleController extends AbstractController
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            // Crée un slug à partir du titre et s'assure qu'il est unique,
-            // Sinon ajout, à la fin du slug, d'un identifiant unique basé sur la date et l'heure
-            $slugger = new AsciiSlugger();
-            $testSlug = $slugger->slug($article->getTitle());
-            $testArticle = $this->repository->findOneBy(['slug' => $testSlug]);
-            if(!empty($testArticle)) {
-                $testSlug .= '-'.uniqid();
-            }
-            $article->setSlug($testSlug);
-
-            // Vérifie la photo
-            $photo = $form->get('photo')->getData();
-            if ($photo) {
-                $newFilename = uniqid().'.'.$photo->guessExtension();
-                try {
-                    $photo->move(
-                        $this->getParameter('photos_dir'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    return new Response($e->getMessage());
-                }
-                $article->setPhoto($newFilename);
-            }
-
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $this->entityManager->persist($article);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('article_show', ['slug' => $testSlug], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('article/new.html.twig', [
@@ -81,9 +55,10 @@ class ArticleController extends AbstractController
     public function show(Article $article): Response
     {
         $others =  $this->repository->findOtherArticles($article->getId());
+        shuffle($others);
         return $this->render('article/show.html.twig', [
             'article' => $article,
-            'others'  => $others
+            'others'  => array_slice($others, 0, 5)
         ]);
     }
 
@@ -95,7 +70,8 @@ class ArticleController extends AbstractController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $this->entityManager->flush();
 
             return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()], Response::HTTP_SEE_OTHER);
@@ -110,16 +86,8 @@ class ArticleController extends AbstractController
     #[Route('/article/delete/{slug}', name: 'article_delete', methods: ['POST'])]
     public function delete(Request $request, Article $article): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token'))) {
-
-            // Supprime la photo, si l'article en possède une
-            $photo = $article->getPhoto();
-            if ($photo !== null) {
-                $fileSystem = new Filesystem();
-                $image_directory = $this->getParameter('photos_dir');
-                $fileSystem->remove($image_directory.'/'.$photo);
-            }
-
+        if ($this->isCsrfTokenValid('delete'.$article->getId(), $request->request->get('_token')))
+        {
             $this->entityManager->remove($article);
             $this->entityManager->flush();
         }

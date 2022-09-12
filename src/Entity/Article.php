@@ -2,18 +2,58 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={
+ *         "groups"={
+ *             "get"
+ *         }
+ *     },
+ *     denormalizationContext={
+ *         "groups"={
+ *             "get", "set", "patch"
+ *         }
+ *     },
+ *     collectionOperations={
+ *         "get",
+ *         "post"={
+ *             "denormalization_context"={
+ *                 "groups"={"set"}
+ *             }
+ *         }
+ *     },
+ *     itemOperations={
+ *         "get",
+ *         "patch"={
+ *             "normalization_context"={
+ *                 "groups"={"get"}
+ *             },
+ *             "denormalization_context"={
+ *                 "groups"={"patch"}
+ *             }
+ *         },
+ *         "delete"
+ *     },
+ * )
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @Vich\Uploadable
  */
 class Article
 {
     /**
+     * @ApiProperty(identifier=false)
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -21,29 +61,44 @@ class Article
     private $id;
 
     /**
+     * @Groups({"get", "set"})
      * @ORM\Column(type="string", length=150)
      */
     private $title;
 
     /**
+     * @ApiProperty(identifier=true)
+     * @Gedmo\Slug(fields={"title"})
+     * @Groups("get")
      * @ORM\Column(type="string", length=150, unique=true)
      */
     private $slug;
 
     /**
+     * @Groups({"get", "set", "patch"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $introduction;
 
     /**
+     * @Groups({"get", "set", "patch"})
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @Groups("get")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
+
+    /**
+     * NOTE: This is not a mapped field of entity metadata, just a simple property.
+     *
+     * @Vich\UploadableField(mapping="photos", fileNameProperty="photo")
+     *
+     */
+    private $photoFile;
 
     public function getId(): ?int
     {
@@ -85,7 +140,7 @@ class Article
 
         return $this;
     }
-
+    
     public function getContent(): ?string
     {
         return $this->content;
@@ -108,6 +163,16 @@ class Article
         $this->photo = $photo;
 
         return $this;
+    }
+    
+    public function getPhotoFile(): ?File
+    {
+        return $this->photoFile;
+    }
+
+    public function setPhotoFile(?File $photoFile = null): void
+    {
+        $this->photoFile = $photoFile;
     }
     
     public static function loadValidatorMetadata(ClassMetadata $metadata): void
