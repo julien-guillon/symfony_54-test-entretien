@@ -22,7 +22,7 @@ class ArticleType extends AbstractType
         $builder
             ->add('introduction', TextType::class, ['required' => false])
             ->add('content', TextareaType::class);
-        if(!isset($options['edit'])) {
+        if($options['edit']) {
             $builder
                 ->add('photo', FileType::class, [
                       'required' => false,
