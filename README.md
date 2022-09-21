@@ -36,7 +36,3 @@ Il contient les tâches à réaliser pour ce test.
 Pour envoyer vos résultats, vous simplement push votre travail avec un pull request.
 
 **Bonne chance !**
-
-
-
-Add GitHub
