@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="bg-light p-5 rounded text-center">
+		<hr>
+		<h1 class="mt-3">Symfony_54 Test entretien </h1>
+		<h2 class="mt-3">Ivan Bougaeff Septembre 2022 </h2>
+		<hr>
+			<div class="bg-light p-5 rounded">
+
+				<a href="{{ path('add_article') }}" class="btn btn-success">Ajouter un article</a>
+				<a href="{{ path('articles') }}" class="btn btn-dark">Voir les articles</a>
+
+			</div>
+		<hr>
+	</div>
+{% endblock %}

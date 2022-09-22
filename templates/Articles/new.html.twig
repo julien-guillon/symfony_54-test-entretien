@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="bg-light p-5 rounded">
+
+		<div class="clss row" style="margin-top:50px;">
+			<h1>Ajouter un article</h1>
+		</div>
+
+		<div class="row">
+			{{ form_start(formArticle) }}
+			<div class="col-md-6">
+				{{form_row(formArticle.title)}}</div>
+			<div class="col-md-6">
+				{{form_row(formArticle.slug)}}</div>
+			<div class="col-md-6">
+				{{form_row(formArticle.introduction)}}</div>
+			<div class="col-md-6">
+				{{form_row(formArticle.content)}}</div>
+		</div>
+		<div class="col-md-6">
+			{{form_row(formArticle.imageFile)}}</div>
+		<input type="submit" value="Créer un article" class="btn btn-success">
+
+		{{ form_end(formArticle) }}
+
+        	<a href="{{ path('articles') }}" class="btn btn-dark">Retourner à la liste des articles</a>
+	</div>
+
+
+
+
+</div></div>{% endblock %}

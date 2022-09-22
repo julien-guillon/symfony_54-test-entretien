@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mt-5">
+        <div class="col-10 col-lg-12 mx-auto">
+            <h1 class="mb-4 mt-5">{{ article.title }}</h1>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-10 col-lg-9 mx-auto">
+            <div class="text-center">
+			{% if article.imageName %}
+				<img src="{{ vich_uploader_asset(article, "imageFile")}}" class="card-img-top" alt="..." style="width:90%; height:auto;">
+			{% else %}
+				<img src="/images/article_default.jpg" class="card-img-top" alt="..." style="width:100%; height:auto;">
+			{% endif %}
+            </div>
+            <div class="lead">
+                {% if article.introduction is not null %}
+                    {{ article.introduction }}
+                    <br>
+                {% endif %}
+             {{ article.content }}
+            </div>
+        <a href="{{ path('articles') }}" class="btn btn-dark mt-5">Retourner à la liste des articles</a>
+        </div>
+        <div class="col-10 col-lg-3 mt-3 mx-auto">
+
+            <h4>Consulter d'autres articles</h4>
+			{% for last_article in last_articles  %}
+				<div class="card mb-2">
+					{% if last_article.imageName %}
+						<img src="{{ vich_uploader_asset(last_article, "imageFile")}}" class="card-img-top" alt="..." style="width:90%; height:auto;">
+					{% else %}
+						<img src="/images/article_default.jpg" class="card-img-top" alt="..." style="width:100%; height:auto;">
+					{% endif %}
+					<div class="card-header">{{ last_article.title }}</div>
+					<div class="card-body">
+						<p class="card-text">{{ last_article.introduction }}</p>
+					</div>
+                    <a href="{{ path('show_article', {'slug': last_article.slug}) }}" class="btn btn-dark">Consulter</a>
+				</div>
+			{% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
