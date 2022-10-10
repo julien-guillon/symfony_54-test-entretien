@@ -31,12 +31,19 @@ RUN set -eux; \
 		icu-dev \
 		libzip-dev \
 		zlib-dev \
+		libpng \
+		libpng-dev \
+		libjpeg-turbo-dev \
+		libwebp-dev \
+		zlib-dev \
+		libxpm-dev gd \
 	; \
 	\
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
 		intl \
 		zip \
+		gd \
 	; \
 	pecl install \
 		apcu-${APCU_VERSION} \
