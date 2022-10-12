@@ -8,6 +8,7 @@
     "require": {
         "php": ">=7.2.5",
         "ext-ctype": "*",
+        "ext-fileinfo": "*",
         "ext-iconv": "*",
         "api-platform/core": "^2.7",
         "composer/package-versions-deprecated": "1.11.99.4",
@@ -49,10 +50,10 @@
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/string-extra": "^3.4",
-        "twig/twig": "^2.12|^3.0",
-        "ext-fileinfo": "*"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "phpunit/phpunit": "^9.5",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",

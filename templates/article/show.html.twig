@@ -21,13 +21,13 @@
                     {% for articleSeeMore in articlesSeeMore %}
                     <li class="see-more-list-item">
                         {% if articleSeeMore.photo is empty  %}
-                            <img class="article-img-see-more" src="{{ asset(image_dir ~  'default.png') }}" alt="{{ article.title }}" />
+                            <img class="article-img-see-more" src="{{ asset(image_dir ~  'default.png') }}" alt="{{ articleSeeMore.title }}" />
                         {% else %}
-                            <img class="article-img-see-more" src="{{ asset(image_dir ~  articleSeeMore.photo) }}" alt="{{ article.title }}" />
+                            <img class="article-img-see-more" src="{{ asset(image_dir ~  articleSeeMore.photo) }}" alt="{{ articleSeeMore.title }}" />
                         {% endif %}
                         <div class="see-more-content">
                             <h3>{{ articleSeeMore.title }}</h3>
-                            <p>{{ articleSeeMore.introduction|u.truncate(150, '...') }}</p>
+                            <p>{{ articleSeeMore.introduction|u.truncate(120, '...') }}</p>
                             <a class="btn btn-action btn-see-more" href="{{ path('show_article', {slug: articleSeeMore.slug}) }}">
                                 Consulter
                             </a>
