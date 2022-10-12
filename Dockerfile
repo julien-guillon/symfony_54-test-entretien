@@ -39,6 +39,7 @@ RUN set -eux; \
 		libxpm-dev gd \
 	; \
 	\
+	docker-php-ext-configure gd --with-jpeg --with-webp; \
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
 		intl \

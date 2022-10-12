@@ -10,8 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ArticleType extends AbstractType
+class ArticleAddType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -19,7 +20,7 @@ class ArticleType extends AbstractType
             ->add('slug', TextType::class)
             ->add('introduction', TextType::class, ['required' => false])
             ->add('content', TextareaType::class)
-            ->add('photo', FileType::class, ['required' => false])
+            ->add('photo', FileType::class, ['required' => false, 'data_class' => null])
         ;
     }
 

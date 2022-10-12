@@ -6,19 +6,24 @@
 
     <div class="container">
         <main>
-            <h1>Ajouter un article</h1>
+            <h1>Modifier l'article {{ article.title }}</h1>
             <div class="form-container">
                 {{ form_start(form) }}
+                {% if article.photo is not empty  %}
+                    <img class="article-edit-img" src="{{ asset(image_dir ~  article.photo) }}" alt="{{ article.title }}" />
+                {% endif %}
                 <div class="multiple-field-container">
                     <div class="form-group">
-                        {{ form_label(form.title, 'Titre', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.title, {'attr': {'placeholder': 'Titre de l\'article', 'class': 'form-control'}}) }}
-                        {{ form_errors(form.title) }}
+                        <label class="form-label" for="titre">
+                            Titre
+                        </label>
+                        <input class="form-control" type="text" name="titre" id="titre" value="{{ article.title }}" disabled>
                     </div>
                     <div class="form-group">
-                        {{ form_label(form.slug, 'Slug', {'label_attr': {'class': 'form-label'}}) }}
-                        {{ form_widget(form.slug, {'attr': {'placeholder': 'Slug', 'class': 'form-control'}}) }}
-                        {{ form_errors(form.slug) }}
+                        <label class="form-label" for="slug">
+                            Titre
+                        </label>
+                        <input class="form-control" type="text" name="slug" id="slug" value="{{ article.slug }}" disabled>
                     </div>
                 </div>
                 <div class="form-group">
@@ -29,14 +34,9 @@
                 <div class="form-group">
                     {{ form_label(form.content, 'Contenu', {'label_attr': {'class': 'form-label'}}) }}
                     {{ form_widget(form.content, {'attr': { 'class': 'form-control'}}) }}
-                    {{ form_errors(form.content) }}
+                    {{ form_errors(form.introduction) }}
                 </div>
-                <div class="form-group">
-                    {{ form_label(form.photo, 'Photo', {'label_attr': {'class': 'form-label'}}) }}
-                    {{ form_widget(form.photo, {'attr': {'class': 'form-control'}}) }}
-                    {{ form_errors(form.photo) }}
-                </div>
-                <button type="submit" class="btn btn-action">Ajouter</button>
+                <button type="submit" class="btn btn-action">Modifier</button>
                 {{ form_end(form) }}
             </div>
 
