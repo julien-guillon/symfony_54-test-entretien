@@ -3,17 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Article;
-use App\Services\ImageOptimizer;
+use App\Services\FileUploader;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @method Article|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,52 +21,33 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ArticleRepository extends ServiceEntityRepository
 {
 
-    private ImageOptimizer $imageOptimizer;
-    private ParameterBagInterface $parameterBag;
-    private SluggerInterface $slugger;
+    private FileUploader $fileUploader;
 
     public function __construct(
         ManagerRegistry $registry,
-        ImageOptimizer $imageOptimizer,
-        ParameterBagInterface $parameterBag,
-        SluggerInterface $slugger
+        FileUploader $fileUploader
     )
     {
         parent::__construct($registry, Article::class);
-        $this->imageOptimizer = $imageOptimizer;
-        $this->parameterBag = $parameterBag;
-        $this->slugger = $slugger;
+        $this->fileUploader = $fileUploader;
     }
 
     /**
      * @param Article $article
      * Gestion de l'ajout d'un nouvel article
      */
-    public function addArticle(Article $article, FormInterface $form)
+    public function addArticle(Article $article, FormInterface $form): void
     {
+
+        $article = $this->handleSlug($article);
 
         // gestion de la photo
         if($article->getPhoto() !== null) {
             // récupération du fichier
             $file = $form->get('photo')->getData();
 
-            // gestion du renommage
-            $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFilename = $this->slugger->slug($originalFilename);
-            $fileName =  $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
             // gestion du stockage
-            $photos_directory = $this->parameterBag->get('photos_directory');
-            try {
-                $file->move(
-                    $photos_directory,
-                    $fileName
-                );
-                $this->imageOptimizer->resize($photos_directory . '/' .$fileName); // resize image
-            } catch (FileException $e) {
-                // log de l'erreur TODO logger dans un gestionnaire de logs
-                dump($e);
-            }
+            $fileName = $this->fileUploader->upload($file);
 
             $article->setPhoto($fileName);
         }
@@ -83,8 +61,8 @@ class ArticleRepository extends ServiceEntityRepository
      * @param Article $article
      * MAJ d'un article en BDD
      */
-    public function editArticle(Article $article) {
-
+    public function editArticle(Article $article): void
+    {
         $this->saveArticleInDataBase($article);
     }
 
@@ -92,7 +70,8 @@ class ArticleRepository extends ServiceEntityRepository
      * @param Article $article
      * Suppression d'un article en BDD
      */
-    public function removeArticle(Article $article) {
+    public function removeArticle(Article $article): void
+    {
         $filesystem = new Filesystem();
 
         // si une photo est associée à l'article, on la supprime
@@ -137,12 +116,27 @@ class ArticleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param Article $article
+     * Méthode de gestion du slug
+     */
+    public function handleSlug(Article $article): Article
+    {
+        $slug = strtolower(trim($article->getSlug()));
+        $slug = preg_replace('/[^a-z0-9-]/', '-', $slug);
+        $slug = preg_replace('/-+/', "-", $slug);
+        if($this->findOneBy(['slug' => $slug]) !== null) {
+            $slug = $slug . uniqid();
+        }
+        return $article->setSlug($slug);
+    }
+
 
     /**
      * @param Article $article
      * Méthode d'exécution de l'ajout / modification
      */
-    private function saveArticleInDataBase(Article $article)
+    private function saveArticleInDataBase(Article $article): void
     {
         try {
             $this->getEntityManager()->persist($article);
@@ -157,7 +151,8 @@ class ArticleRepository extends ServiceEntityRepository
      * @param Article $article
      * Méthode d'exécution de la suppression
      */
-    private function removeArticleInDataBase(Article $article) {
+    private function removeArticleInDataBase(Article $article): void
+    {
         try {
             $this->getEntityManager()->remove($article);
             $this->getEntityManager()->flush();

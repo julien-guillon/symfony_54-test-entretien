@@ -15,7 +15,9 @@
         <server name="SHELL_VERBOSITY" value="-1" />
         <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
+        <env name="DATABASE_URL" value="postgresql://symfony:ChangeMe@127.0.0.1:5432/app?serverVersion=13" />
     </php>
+
 
     <testsuites>
         <testsuite name="Project Test Suite">

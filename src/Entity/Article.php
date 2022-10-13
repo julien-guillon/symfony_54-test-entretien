@@ -16,48 +16,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[UniqueEntity('slug', message: 'Ce slug est utilisé pour un autre article')]
 #[ApiResource(
     collectionOperations: [
-        'get',
+        'get' => ['normalization_context' => ['groups' => 'read']],
         'post' => [
             'controller' => CreateArticleAction::class,
-            'deserialize' => false,
-            'openapi_context' => [
-                'requestBody' => [
-                    'content' => [
-                        'multipart/form-data' => [
-                            'schema' => [
-                                'type' => 'object',
-                                'properties' => [
-                                    'title' => [
-                                        'description' => 'Le titre de l\'article',
-                                        'type' => 'string'
-                                    ],
-                                    'slug' => [
-                                        'description' => 'le slug de l\'article',
-                                        'type' => 'string'
-                                    ],
-                                    'introduction' => [
-                                        'description' => 'Une introduction ou résumé',
-                                        'type' => 'string'
-                                    ],
-                                    'content' => [
-                                        'description' => 'Le contenu',
-                                        'type' => 'string'
-                                    ],
-                                    'file' => [
-                                        'type' => 'string',
-                                        'format' => 'binary',
-                                    ],
-                                ],
-                                'required' => ['title', 'slug', 'content']
-                            ],
-                        ],
-                    ],
-                ],
-            ],
+            'denormalization_context' => ['groups' => 'write:collection'],
         ],
     ],
     itemOperations : [
-        'get',
+        'get' => ['normalization_context' => ['groups' => 'read']],
         'put' => [
             'denormalization_context' => ['groups' => 'write:item']
         ],
@@ -76,7 +42,7 @@ class Article
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type : 'integer')]
-    #[Groups(['read:collection, read:item'])]
+    #[Groups(['read'])]
     private int $id;
 
 
@@ -87,7 +53,7 @@ class Article
     #[ORM\Column(type : 'string', length: 150)]
     #[Assert\NotBlank(message: 'Merci de renseigner le titre')]
     #[Assert\Length(max: 150, maxMessage: 'Merci de renseigner un titre avec moins de 150 caractères')]
-    #[Groups(['read:collection', 'write:collection', 'read:item', 'delete:item'])]
+    #[Groups(['write:collection', 'read'])]
     private ?string $title;
 
     /**
@@ -97,7 +63,7 @@ class Article
     #[ORM\Column(type : 'string', length: 150, unique: true)]
     #[Assert\NotBlank(message: 'Merci de renseigner le slug')]
     #[Assert\Length(max: 150, maxMessage: 'Merci de renseigner un slug avec moins de 150 caractères')]
-    #[Groups(['read:collection', 'write:collection', 'read:item', 'delete:item'])]
+    #[Groups(['write:collection', 'read'])]
     private ?string $slug;
 
     /**
@@ -106,7 +72,7 @@ class Article
      */
     #[ORM\Column(type : 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: 'Merci de renseigner une introduction avec moins de 255 caractères')]
-    #[Groups(['read:collection', 'write:collection', 'read:item', 'write:item', 'delete:item'])]
+    #[Groups(['write:collection', 'write:item', 'read'])]
     private ?string $introduction = null;
 
 
@@ -116,7 +82,7 @@ class Article
      */
     #[ORM\Column(type : 'text')]
     #[Assert\NotBlank(message: 'Merci de rédiger un texte')]
-    #[Groups(['read:collection', 'write:collection', 'read:item', 'write:item', 'delete:item'])]
+    #[Groups(['write:collection', 'write:item', 'read'])]
     private ?string $content;
 
     /**
@@ -129,10 +95,15 @@ class Article
         mimeTypesMessage: 'Merci de choisir une image au format JPEG ou PNG',
         groups: ['create']
     )]
-    #[Groups(['read:collection', 'write:collection', 'read:item', 'delete:item'])]
+    #[Groups(['read'])]
     private ?string $photo = null;
 
-
+    /**
+     * @var string|null
+     * Champ fichier non stocké en DB utilisé pour l'upload REST
+     */
+    #[Groups(['write:collection'])]
+    private ?string $file = null;
 
     public function getId(): ?int
     {
@@ -195,6 +166,18 @@ class Article
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    public function setFile(?string $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

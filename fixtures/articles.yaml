@@ -1,0 +1,7 @@
+App\Entity\Article:
+    article_{1..100}:
+        title: <text(80)>
+        slug: <slug()>
+        introduction: <text()>
+        content: <paragraph(10)>
+        photo: 'fixture.jpg'

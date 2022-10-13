@@ -14,12 +14,20 @@ class FileUploader
     private SluggerInterface $slugger;
     private UrlHelper $urlHelper;
     private string $relativeUploadsDir;
+    private ImageOptimizer $imageOptimizer;
 
-    public function __construct(string $publicPath, string $uploadPath, SluggerInterface $slugger, UrlHelper $urlHelper)
+    public function __construct(
+        string $publicPath,
+        string $uploadPath,
+        SluggerInterface $slugger,
+        UrlHelper $urlHelper,
+        ImageOptimizer $imageOptimizer
+    )
     {
         $this->uploadPath = $uploadPath;
         $this->slugger = $slugger;
         $this->urlHelper = $urlHelper;
+        $this->imageOptimizer = $imageOptimizer;
 
         $this->relativeUploadsDir = str_replace($publicPath, '', $this->uploadPath).'/';
     }
@@ -36,6 +44,9 @@ class FileUploader
             // log de l'erreur TODO logger dans un gestionnaire de logs
             dump($e);
         }
+
+        $this->imageOptimizer->resize($this->uploadPath . '/' .$fileName);
+
 
         return $fileName;
     }

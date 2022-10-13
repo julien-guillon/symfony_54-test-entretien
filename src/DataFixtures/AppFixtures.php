@@ -21,7 +21,7 @@ class AppFixtures extends Fixture
             $article->setTitle($title . $i);
             $article->setIntroduction($introduction);
             $article->setContent($content);
-            $article->setSlug('lorem'. $i);
+            $article->setSlug(uniqid('slug' . $i, ));
             $article->setPhoto( 'default.png');
             $manager->persist($article);
         }
