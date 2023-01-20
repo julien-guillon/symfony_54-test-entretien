@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block body %}
+    <h2 class="py-2">{{ article.title }}</h2>
+
+    <div class="row">
+        <div id="article" class="col-sm-8">
+            {% if article.photo %}<img src="/images/articles/{{ article.photo }}" class="img-fluid mb-2">{% endif %}
+            <p>
+                {{ article.content|nl2br }}
+            </p>
+        </div>
+
+        <div id="more-article" class="col-sm-4">
+            <h4>Consulter d'autres articles</h4>
+            {% for last_article in last_articles %}
+                <div class="card mb-2">
+                    {% if last_article.photo %}
+                        <img src="/images/articles/{{ last_article.photo }}" class="card-img-top">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ last_article.title }}</h5>
+                        <p class="card-text">{{ last_article.introduction }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
