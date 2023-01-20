@@ -172,7 +172,7 @@ class Article
         return $this->photoUrl;
     }
 
-    public function setPhotoUrl(string $photoUrl): self
+    public function setPhotoUrl(?string $photoUrl): self
     {
         $this->photoUrl = $photoUrl;
 
