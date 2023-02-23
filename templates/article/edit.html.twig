@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Edit Article{% endblock %}
+ 
+{% block body %}
+    <div class="container">
+        <h2 class="text-center mt-5 py-5">Edit Article</h2>
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-outline-info float-right" href="{{ path('app_article') }}"> 
+                    View All Projects
+                </a>
+            </div>
+            <div class="card-body">
+                {{ include('article/_form_edit.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

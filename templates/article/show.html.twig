@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+ 
+{% block title %}Project{% endblock %}
+ 
+{% block body %}
+    <div class="py-5 mt-5">
+        <div class="card-body">
+            <h2>{{ article.title }}</h2>
+            <div class="row">
+                {% if otherArticles is empty() %}
+                    <div class="box">
+                        {% if article.photo != null %}
+                            <img src="{{ absolute_url(asset('uploads/images/'~ article.photo)) }}" style="width:100%; height:500px" alt="Image">
+                        {% else %}
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="500px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image Manquante" preserveAspectRatio="xMidYMid slice" focusable="false">
+                                <title>Image Manquante</title>
+                                <rect width="100%" height="100%" fill="#868e96"></rect>
+                            </svg>
+                        {% endif %}
+                        <p>{{ article.content}}</p>
+                    </div>
+                {% else %}
+                    <div class="col-lg-8">
+                        <div class="box">
+                            {% if article.photo != null %}
+                                <img src="{{ absolute_url(asset('uploads/images/'~ article.photo)) }}" style="width:100%; height:500px" alt="Image">
+                            {% else %}
+                                <svg class="bd-placeholder-img card-img-top" width="100%" height="500px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image Manquante" preserveAspectRatio="xMidYMid slice" focusable="false" style="border-radius:initial">
+                                    <title>Image Manquante</title>
+                                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                                </svg>
+                            {% endif %}
+                            <p>{{ article.content}}</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <h4>Consulter d'autres articles</h4>
+                        {% for otherArticle in otherArticles %}
+                            <div class="card boxOther">
+                                {% if otherArticle.photo != null %}
+                                    <img src="{{ absolute_url(asset('uploads/images/'~ otherArticle.photo)) }}" style="width:100%" alt="Image">
+                                {% else %}
+                                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image Manquante" preserveAspectRatio="xMidYMid slice" focusable="false" style="border-radius:initial">
+                                        <title>Image Manquante</title>
+                                        <rect width="100%" height="100%" fill="#868e96"></rect>
+                                    </svg>
+                                {% endif %}
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ otherArticle.title }}</h5>
+                                    <p class="card-text">{{ otherArticle.content }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
