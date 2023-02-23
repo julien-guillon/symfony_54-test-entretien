@@ -1,0 +1,49 @@
+@import "custom";
+@import "~bootstrap/scss/bootstrap";
+
+
+body {
+    background-color: lightgray;
+}
+
+.box {
+    display: inline-block;
+    width: 90%;
+}
+
+.boxOther {
+    display: inline-block;
+    width: 100%;    
+    margin-bottom: 2%;
+}
+
+.boxOther svg, .boxOther img{
+    height: 180px;
+}
+
+.card-text {
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 3; /* number of lines to show */
+           line-clamp: 3; 
+   -webkit-box-orient: vertical;
+}
+
+@media only screen and (max-width: 991px)  {
+    .box {
+        width: 100%;
+    }
+
+    .boxOther {
+        width: 100%;    
+    }
+
+    .boxOther svg, .boxOther img{
+        height: 300px !important;
+    }
+
+    .box svg, .box img {
+        height: 400px !important;
+    }
+}
